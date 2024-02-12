@@ -1,0 +1,153 @@
+@page "/wordsearch"
+
+<h3>Word Search Game</h3>
+
+<button @onclick="GenerateGrid">Generate Grid</button>
+
+@if (grid != null)
+{
+    <table>
+        @for (int i = 0; i < grid.Length; i++)
+        {
+            var row = i;
+            <tr>
+                @for (int j = 0; j < grid[i].Length; j++)
+                {
+                    var column = j;
+                     <td class="@(selected[row][column] ? "selected" : "")" @onclick="() => SelectLetter(row, column)">@grid[i][j]</td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+<h4>Selected Word:</h4>
+<p>@selectedWord</p>
+
+<h4>Found Words:</h4>
+<ul>
+    @foreach (var word in foundWords)
+    {
+        <li>@word</li>
+    }
+</ul>
+
+<h4>Guess a Word:</h4>
+<input type="text" @bind="guessedWord" />
+<button @onclick="CheckWord">Check</button>
+
+@if (IsGameEnded())
+{
+    <h4>Game Ended!</h4>
+    <p>Congratulations! You have found all the words.</p>
+}
+
+
+<ul>
+    @foreach (var word in words)
+    {
+        <li class="@(foundWords.Contains(word) ? "found" : "")">@word</li>
+    }
+</ul>
+@code {
+   const int rows=20;
+   const int columns=20;
+    private char[][] grid;
+        private bool[][] selected;
+    private List<string> foundWords = new List<string>();
+    private string guessedWord;
+    private string selectedWord = string.Empty;
+    private bool gameEnded = false;
+    private List<string> words = new List<string> { "WORD1", "WORD2", "WORD3" }; // Replace with your words
+ 
+    private void GenerateGrid()
+    {
+        Random random = new Random();
+        grid = new char[rows][];
+
+        for (int i = 0; i < rows; i++)
+        {
+            grid[i] = new char[columns];
+            for (int j = 0; j < columns; j++)
+            {
+                grid[i][j] = (char)random.Next('A', 'Z' + 1);
+            }
+        }
+
+                selected = new bool[rows][];
+        for (int i = 0; i < rows; i++)
+        {
+            selected[i] = new bool[columns];
+        }
+
+        
+    }
+
+    private void SelectLetter(int row, int column)
+    {        selected[row][column] = !selected[row][column];
+        Console.WriteLine($"Selected word:{selectedWord }.  Row: {row}, Column: {column}");
+
+        if (selectedWord.Length == 0)
+        {
+            selectedWord += grid[row][column];
+        }
+        else
+        {
+            int lastRow = -1;
+            int lastColumn = -1;
+
+            if (!string.IsNullOrEmpty(selectedWord))
+            {
+                lastRow = row;
+                lastColumn = column;
+            }
+
+            if ((row == lastRow && Math.Abs(column - lastColumn) == 1) ||
+                (column == lastColumn && Math.Abs(row - lastRow) == 1) ||
+                (Math.Abs(row - lastRow) == 1 && Math.Abs(column - lastColumn) == 1))
+            {
+                selectedWord += grid[row][column];
+            }
+        }
+
+                // Check if any words are completed
+        foreach (var word in words)
+        {
+            if (IsWordCompleted(word) && !foundWords.Contains(word))
+            {
+                foundWords.Add(word);
+            }
+        }
+
+        
+    }
+
+
+    private bool IsWordCompleted(string word)
+    {
+        // Implement this function to check if the word can be formed from the selected letters
+        // This will depend on the rules of your game (e.g., are diagonal words allowed? Can letters be reused?)
+        throw new NotImplementedException();
+    }
+
+    private void CheckWord()
+    {
+        if (!string.IsNullOrEmpty(selectedWord))
+        {
+            foundWords.Add(selectedWord);
+            selectedWord = string.Empty;
+
+            if (IsGameEnded())
+            {
+                gameEnded = true;
+            }
+        }
+    }
+
+    private bool IsGameEnded()
+    {
+        // Check if all the words have been found
+        // You can implement your own logic here
+        return foundWords.Count == 10;
+    }
+}

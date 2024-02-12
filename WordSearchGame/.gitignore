@@ -1,0 +1,61 @@
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+*.user
+*.userosscache
+*.diagnosticsession
+*.svclog
+*.dotCover
+*.ncrunchsolution
+*.opencover
+*.userprefs
+*.suo
+*.sln.docstates
+*.sln.ide/
+*.pidb
+*.svclog
+*.scc
+*.bak
+*.bak.*
+*.log
+*.vspscc
+*.vssscc
+.vs/
+*.pidb
+*.suo
+*.user
+*.userosscache
+*.sln.ide
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio cache files
+# files ending in .cache can be ignored
+*.[Cc]ache
+# but keep track of directories ending in .cache
+!*.[Cc]ache/
+
+# Others
+ClientApp/node_modules/
+node_modules/
+wwwroot/dist/
+wwwroot/assets/
+wwwroot/lib/
+npm-debug.log
+yarn-error.log
